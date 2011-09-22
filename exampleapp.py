@@ -143,6 +143,10 @@ def index():
 def close():
     return render_template('close.html')
 
+@app.route('/word/<w>', methods=['GET'])
+def word(w):
+    return render_template('word.html', appId=FBAPI_APP_ID, word=w)
+
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     if app.config.get('FBAPI_APP_ID') and app.config.get('FBAPI_APP_SECRET'):
