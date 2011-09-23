@@ -3,7 +3,7 @@
   <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# verbing: http://ogp.me/ns/fb/verbing#">
     <meta charset="utf-8" />
     <!-- We get the name of the app out of the information fetched -->
-    <title>{{word}}</title>
+    <title>{{word}} (v.)</title>
     <link href="/static/screen.css" media="screen" rel="stylesheet" />
     <!-- These are Open Graph tags.  They add meta data to your  -->
     <!-- site that facebook uses when your content is shared     -->
@@ -25,12 +25,14 @@
       </script>
     <![endif]-->
   </head>
-  <body>
+  <body style="text-align:center">
     <header>
       <h1>
-        {{word}}
-        <img src="/static/images/logo.png" style="vertical-align: middle"/>
+        {{word}} <em>(v.)</em>
       </h1>
     </header>
+    <div>
+      <a href="/">verb ALL the things!</a>
+    </div>
   </body>
 </html>

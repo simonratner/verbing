@@ -7,21 +7,26 @@
 --------------------------------------------- */
 body {
   color: #999;
-  font: 14px/1.5em "Lucida Grande", Arial, sans-serif;
+  font: 14px Georgia,serif;
   -webkit-font-smoothing: antialiased;
-  width: 742px;
+  margin-top: 20px;
+}
 
-  margin: 20px; /* NOTE: Temporary */
+body.column {
+  width: 60%;
+  margin-left: 20%;
 }
 
 a:link, a:visited {
-  color: #3b5998;
-  font-weight: bold;
+  border-bottom: 1px dotted #999;
+  color: #999;
+  font-style: italic;
+  font-weight: normal;
   text-decoration: none;
 }
 
 a:hover, a:active {
-  text-decoration: underline;
+  border-bottom: 1px solid #999;
 }
 
 h1 {
@@ -29,11 +34,14 @@ h1 {
   font-size: 48pt;
   font-style: italic;
   font-weight: normal;
-  font-family: Georgia,_serif
+}
+
+h1 em {
+  color: #000;
 }
 
 header {
-  padding: 24px 18px;
+  padding: 24px 0;
 }
 
 header #picture + div {
@@ -96,6 +104,7 @@ input[type="text"] {
   display: inline-block;
   font-family: 'Lucida Grande', Tahoma, Verdana, Arial, sans-serif;
   font-size: 11px;
+  font-style: normal;
   font-weight: bold;
   line-height: 20px;
   margin: 0;
