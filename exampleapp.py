@@ -145,7 +145,7 @@ def close():
 
 @app.route('/word/<w>', methods=['GET'])
 def word(w):
-    return render_template('word.html', appId=FBAPI_APP_ID, word=w)
+    return render_template('word.html', appId=FBAPI_APP_ID, word=w.lower())
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
