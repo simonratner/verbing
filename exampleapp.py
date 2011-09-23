@@ -4,8 +4,9 @@ import os.path
 import simplejson as json
 import urllib
 import urllib2
+import httplib2
 
-from flask import Flask, request, redirect, render_template, url_for
+from flask import Flask, abort, request, redirect, render_template, url_for
 
 FBAPI_APP_ID = os.environ.get('FACEBOOK_APP_ID')
 
@@ -111,31 +112,17 @@ def index():
 
         me = fb_call('me', args={'access_token': access_token})
         app = fb_call(FBAPI_APP_ID, args={'access_token': access_token})
-        likes = fb_call('me/likes',
-                        args={'access_token': access_token, 'limit': 4})
-        friends = fb_call('me/friends',
-                          args={'access_token': access_token, 'limit': 4})
-        photos = fb_call('me/photos',
-                         args={'access_token': access_token, 'limit': 16})
 
         redir = get_home() + 'close/'
         POST_TO_WALL = ("https://www.facebook.com/dialog/feed?redirect_uri=%s&"
                         "display=popup&app_id=%s" % (redir, FBAPI_APP_ID))
-
-        app_friends = fql(
-            "SELECT uid, name, is_app_user, pic_square "
-            "FROM user "
-            "WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me()) AND "
-            "  is_app_user = 1", access_token)
-
         SEND_TO = ('https://www.facebook.com/dialog/send?'
                    'redirect_uri=%s&display=popup&app_id=%s&link=%s'
                    % (redir, FBAPI_APP_ID, get_home()))
 
         return render_template(
-            'index.html', appId=FBAPI_APP_ID, token=access_token, likes=likes,
-            friends=friends, photos=photos, app_friends=app_friends, app=app,
-            me=me, POST_TO_WALL=POST_TO_WALL, SEND_TO=SEND_TO)
+            'index.html', appId=FBAPI_APP_ID, token=access_token, app=app, me=me,
+            POST_TO_WALL=POST_TO_WALL, SEND_TO=SEND_TO)
     else:
         print oauth_login_url(next_url=get_home())
         return redirect(oauth_login_url(next_url=get_home()))
@@ -152,7 +139,15 @@ def get_word(word):
 @app.route('/word/', methods=['POST'])
 def post_word():
     word = request.form['word'].lower()
-    return redirect(url_for('get_word', word=word))
+    # curl -X POST -F "access_token=AAAEGGC3TuoMBAFUZBzWPn7EUGZC71ZAuPZBdKzF9hpKQJ3LyiOoSXgyxKzxJGxUHNMR1Nm5ae3POKyEEXaZAI36oolZBuHaKVrkFQUhfX3ZCAZDZD" -F "word=http://verbing.herokuapp.com/word/verb" "https://graph.facebook.com/me/verbing:verb"
+    h = httplib2.Http()
+    url = url_for('get_word', word=word)
+    data = dict(access_token=request.form['token'], word=url)
+    resp, content = h.request("https://graph.facebook.com/me/verbing:verb", "POST", urllib.urlencode(data))
+    if resp['status'] < 400:
+      return redirect(url)
+    else:
+      return abort(resp['status'])
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
