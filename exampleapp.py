@@ -104,10 +104,10 @@ def get_home():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     print get_home()
-    #if request.args.get('code', None):
-        #access_token = fbapi_auth(request.args.get('code'))[0]
-    if request.args.get('access_token', None):
-        access_token = request.args.get('access_token')
+    #if request.args.get('access_token', None):
+    #    access_token = request.args.get('access_token')
+    if request.args.get('code', None):
+        access_token = fbapi_auth(request.args.get('code'))[0]
 
         me = fb_call('me', args={'access_token': access_token})
         app = fb_call(FBAPI_APP_ID, args={'access_token': access_token})
@@ -152,9 +152,7 @@ def get_word(word):
 @app.route('/word/', methods=['POST'])
 def post_word():
     word = request.form['word'].lower()
-    u = url_for('get_word', word=word)
-    print u
-    return redirect(u)
+    return redirect(url_for('get_word', word=word))
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
