@@ -106,7 +106,7 @@ def get_home():
 def index():
     print get_home()
     #if request.args.get('access_token', None):
-    #    access_token = request.args.get('access_token')
+        #access_token = request.args.get('access_token')
     if request.args.get('code', None):
         access_token = fbapi_auth(request.args.get('code'))[0]
 
@@ -144,10 +144,9 @@ def post_word():
     url = url_for('get_word', word=word)
     data = dict(access_token=request.form['token'], word=url)
     resp, content = h.request("https://graph.facebook.com/me/verbing:verb", "POST", urllib.urlencode(data))
-    if resp['status'] < 400:
+    if int(resp['status']) < 400:
       return redirect(url)
-    else:
-      return abort(resp['status'])
+    abort(500)
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
