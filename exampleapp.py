@@ -144,6 +144,7 @@ def post_word():
     url = url_for('get_word', word=word)
     data = dict(access_token=request.form['token'], word=url)
     resp, content = h.request("https://graph.facebook.com/me/verbing:verb", "POST", urllib.urlencode(data))
+    print data
     print resp
     if int(resp['status']) == 200:
       return redirect(url)
