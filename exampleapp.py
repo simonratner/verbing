@@ -153,6 +153,6 @@ def post_word():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     if app.config.get('FBAPI_APP_ID') and app.config.get('FBAPI_APP_SECRET'):
-        app.run(host='0.0.0.0', port=port)
+        app.run(host='0.0.0.0', port=port, threaded=True)
     else:
         print 'Cannot start application without Facebook App Id and Secret set'
