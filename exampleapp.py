@@ -142,7 +142,7 @@ def post_word():
     # curl -X POST -F "access_token=AAAEGGC3TuoMBAFUZBzWPn7EUGZC71ZAuPZBdKzF9hpKQJ3LyiOoSXgyxKzxJGxUHNMR1Nm5ae3POKyEEXaZAI36oolZBuHaKVrkFQUhfX3ZCAZDZD" -F "word=http://verbing.herokuapp.com/word/verb" "https://graph.facebook.com/me/verbing:verb"
     h = httplib2.Http()
     url = url_for('get_word', word=word)
-    data = dict(access_token=request.form['token'], word=url)
+    data = dict(access_token=request.form['token'], word="http://%s%s" % (request.host, url))
     resp, content = h.request("https://graph.facebook.com/me/verbing:verb", "POST", urllib.urlencode(data))
     print data
     print resp
