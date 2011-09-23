@@ -5,7 +5,7 @@ import simplejson as json
 import urllib
 import urllib2
 
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, url_for
 
 FBAPI_APP_ID = os.environ.get('FACEBOOK_APP_ID')
 
@@ -104,8 +104,10 @@ def get_home():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     print get_home()
-    if request.args.get('code', None):
-        access_token = fbapi_auth(request.args.get('code'))[0]
+    #if request.args.get('code', None):
+        #access_token = fbapi_auth(request.args.get('code'))[0]
+    if request.args.get('access_token', None):
+        access_token = request.args.get('access_token')
 
         me = fb_call('me', args={'access_token': access_token})
         app = fb_call(FBAPI_APP_ID, args={'access_token': access_token})
@@ -143,9 +145,16 @@ def index():
 def close():
     return render_template('close.html')
 
-@app.route('/word/<w>', methods=['GET'])
-def word(w):
-    return render_template('word.html', appId=FBAPI_APP_ID, word=w.lower())
+@app.route('/word/<word>', methods=['GET'])
+def get_word(word):
+    return render_template('word.html', appId=FBAPI_APP_ID, word=word.lower())
+
+@app.route('/word/', methods=['POST'])
+def post_word():
+    word = request.form['word'].lower()
+    u = url_for('get_word', word=word)
+    print u
+    return redirect(u)
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
