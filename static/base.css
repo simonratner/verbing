@@ -60,25 +60,9 @@ input[type="text"] {
   width: 100%;
 }
 
-#share-app {
-  margin-top: 16px;
-}
-
-#share-app ul {
-}
-
-#share-app p {
-  float: left;
-}
-
-#share-app li {
-  float: left;
-  list-style: none;
-  margin-right: 8px;
-}
-
 #verb-app {
   float: right;
+  margin-top: 8px;
 }
 
 #verb-app ul {
@@ -122,7 +106,7 @@ input[type="text"] {
 
 .facebook-button span {
   background: url("/static/images/sprites.png") no-repeat;
-  padding: 0 7px 0 21px;
+  padding: 0 8px 0 24px;
 }
 
 .facebook-button .speech-bubble {
